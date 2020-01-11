@@ -4,4 +4,5 @@ class Coupon < ApplicationRecord
     validates_presence_of :value_off
 
     has_many :orders
+    belongs_to :merchant
 end 
