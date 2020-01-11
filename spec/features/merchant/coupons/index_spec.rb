@@ -39,8 +39,6 @@ describe 'As a merchant user', type: :feature do
       visit '/merchant'
 
       click_link 'See My Coupons'
-
-      save_and_open_page
       
       expect(current_path).to eq('/merchant/coupons')
 
