@@ -39,7 +39,17 @@ royal = liquor_store.items.create(name: "Royal", description: "One glass 'ill do
 yamazaki = liquor_store.items.create(name: "The Yamazaki", description: "Imported whiskey!", price: 180, image: "https://cdn11.bigcommerce.com/s-zhp7f0lunw/images/stencil/1024x1024/products/17352/4757/Nikka_From_the_Barrel__52967.1577829892.jpg?c=2", inventory: 7)
 nikka = liquor_store.items.create(name: "Nikka", description: "Straight from the barrel!", price: 180, image: "https://cdn11.bigcommerce.com/s-zhp7f0lunw/images/stencil/1024x1024/products/17352/4757/Nikka_From_the_Barrel__52967.1577829892.jpg?c=2", inventory: 10)
 
+#phone_shop coupons
+coupon_1 = Coupon.new(name: 'Half off summer sale!',
+  code: 'summersale',
+  value_off: 0.50)
 
+coupon_2 = Coupon.new(name: 'Labor Day Sale',
+  code: 'LaborDay2020',
+  value_off: 0.30)
+
+phone_shop.coupons << [coupon_1, coupon_2]
+  
 user = User.create(name: "Jordan",
                     address: "394 High St",
                     city: "Denver",
