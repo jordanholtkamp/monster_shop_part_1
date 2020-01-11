@@ -39,19 +39,21 @@ describe 'As a merchant user', type: :feature do
       visit '/merchant'
 
       click_link 'See My Coupons'
+
+      save_and_open_page
       
       expect(current_path).to eq('/merchant/coupons')
 
       within "#coupon-#{@coupon_1.id}" do 
         expect(page).to have_content(@coupon_1.name)
         expect(page).to have_content(@coupon_1.code)
-        expect(page).to have_content(@coupon_1.value_off)
+        expect(page).to have_content("Percentage off: 50.0%")
       end 
 
       within "#coupon-#{@coupon_2.id}" do 
         expect(page).to have_content(@coupon_2.name)
         expect(page).to have_content(@coupon_2.code)
-        expect(page).to have_content(@coupon_2.value_off)
+        expect(page).to have_content("Percentage off: 30.0%")
       end 
 
       expect(page).not_to have_css("#coupon-#{@random_coupon.id}")

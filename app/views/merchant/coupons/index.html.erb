@@ -1,0 +1,11 @@
+<h1> All Coupons for <%= @merchant.name %> </h1>
+
+<section class="grid-container">
+  <% @merchant.coupons.each do |coupon| %>
+    <section class="grid-item" id="coupon-<%= coupon.id %>">
+      <%= coupon.name %>
+      <p>Code: <%= coupon.code %></p>
+      <p>Percentage off: <%= (coupon.value_off * 100) %>%</p>
+    </section>
+  <% end %>
+</section>
