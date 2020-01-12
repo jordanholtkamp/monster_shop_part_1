@@ -16,11 +16,11 @@ describe 'As a merchant user on the coupon index', type: :feature do
 
     @coupon_1 = Coupon.new(name: 'Half off summer sale!',
                            code: 'summersale',
-                           value_off: 0.50)
+                           value_off: 50)
 
     @coupon_2 = Coupon.new(name: 'Labor Day Sale',
                            code: 'LaborDay2020',
-                           value_off: 0.30)
+                           value_off: 30)
 
     @merchant_company.users << @merchant_admin
     @merchant_company.coupons << [@coupon_1, @coupon_2]
@@ -39,7 +39,7 @@ describe 'As a merchant user on the coupon index', type: :feature do
 
     expect(find_field("Name").value).to eq(@coupon_1.name)
     expect(find_field("Code").value).to eq(@coupon_1.code)
-    expect(find_field("Value off").value).to eq('0.5')
+    expect(find_field("Value off").value).to eq('50')
   end 
 
   it 'can update the attributes for an item' do 
@@ -85,6 +85,6 @@ describe 'As a merchant user on the coupon index', type: :feature do
     expect(page).to have_content('Name has already been taken')
     expect(find_field("Name").value).to eq(new_name)
     expect(find_field("Code").value).to eq(new_code)
-    expect(find_field("Value off").value).to eq('0.5')
+    expect(find_field("Value off").value).to eq('50')
   end 
 end 

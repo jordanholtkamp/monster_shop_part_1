@@ -7,6 +7,7 @@ class Coupon < ApplicationRecord
     validates_uniqueness_of :code
 
     validates_numericality_of :value_off
+    validates_inclusion_of :value_off, :in => 1..100
 
     has_many :orders
     belongs_to :merchant

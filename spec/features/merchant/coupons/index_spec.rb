@@ -17,15 +17,15 @@ describe 'As a merchant user', type: :feature do
 
     @coupon_1 = Coupon.new(name: 'Half off summer sale!',
                            code: 'summersale',
-                           value_off: 0.50)
+                           value_off: 50)
 
     @coupon_2 = Coupon.new(name: 'Labor Day Sale',
                            code: 'LaborDay2020',
-                           value_off: 0.30)
+                           value_off: 30)
 
     @random_coupon = Coupon.new(name: 'Black Friday Sale',
                                 code: 'BLACKFRIDAY',
-                                value_off: 0.25)
+                                value_off: 25)
     
     @merchant_company.users << @merchant_admin
     @merchant_company.coupons << [@coupon_1, @coupon_2]
