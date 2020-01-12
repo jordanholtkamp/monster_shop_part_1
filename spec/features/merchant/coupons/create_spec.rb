@@ -16,11 +16,11 @@ describe 'As a merchant user' do
 
     @coupon_1 = Coupon.new(name: 'Half off summer sale!',
                            code: 'summersale',
-                           value_off: 0.50)
+                           value_off: 50)
 
     @coupon_2 = Coupon.new(name: 'Labor Day Sale',
                            code: 'LaborDay2020',
-                           value_off: 0.30)
+                           value_off: 30)
 
     @merchant_company.users << @merchant_admin
     @merchant_company.coupons << [@coupon_1, @coupon_2]
@@ -45,7 +45,7 @@ describe 'As a merchant user' do
 
       fill_in :name, with: 'New Year Sale'
       fill_in :code, with: 'NEWYEARNEWME'
-      fill_in :value_off, with: 0.25
+      fill_in :value_off, with: 25
 
       click_button 'Create Coupon'
 
@@ -76,11 +76,25 @@ describe 'As a merchant user' do
 
       fill_in :name, with: 'Half off summer sale!'
       fill_in :code, with: 'xyz'
-      fill_in :value_off, with: 0.50
+      fill_in :value_off, with: 50
 
       click_button 'Create Coupon'
 
       expect(page).to have_content('Name has already been taken')
+    end 
+
+    it 'cannot put in a percent outside of 1 and 100' do 
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_admin)
+
+      visit '/merchant/coupons/new'
+      
+      fill_in :name, with: 'New Year Sale'
+      fill_in :code, with: 'NEWYEARNEWME'
+      fill_in :value_off, with: 125
+
+      click_button 'Create Coupon'
+
+      expect(page).to have_content('Value off is not included in the list')
     end 
   end 
 end 
