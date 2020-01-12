@@ -6,6 +6,8 @@ class Coupon < ApplicationRecord
     validates_uniqueness_of :name
     validates_uniqueness_of :code
 
+    validates_numericality_of :value_off
+
     has_many :orders
     belongs_to :merchant
 end 

@@ -7,6 +7,7 @@ describe Coupon, type: :model do
         it { should validate_presence_of :value_off }
         it { should validate_uniqueness_of :name }
         it { should validate_uniqueness_of :code }
+        it { should validate_numericality_of :value_off }
       end 
 
     describe 'relationships' do 
