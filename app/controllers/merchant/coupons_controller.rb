@@ -29,9 +29,8 @@ class Merchant::CouponsController < ApplicationController
       flash[:success] = "#{coupon.name} has been updated."
       redirect_to '/merchant/coupons'
     else 
-      @coupon = coupon
+      redirect_back(fallback_location: '/merchant/coupons')
       flash[:error] = coupon.errors.full_messages.to_sentence
-      render :edit
     end 
   end 
 

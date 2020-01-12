@@ -76,15 +76,15 @@ describe 'As a merchant user on the coupon index', type: :feature do
       expect(page).to have_content(new_code)
     end 
 
-    within "#coupon-#{@coupon_1.id}" do 
-      click_link 'Edit Coupon'
-    end 
+    visit "/merchant/coupons/#{@coupon_1.id}/edit"
 
     fill_in :name, with: 'Labor Day Sale'
-    fill_in :value_off, with: 'fngrehi'
 
     click_button 'Update Coupon'
 
-    expect(page).to have_content('Name has already been taken and Value off is not a number')
+    expect(page).to have_content('Name has already been taken')
+    expect(find_field("Name").value).to eq(new_name)
+    expect(find_field("Code").value).to eq(new_code)
+    expect(find_field("Value off").value).to eq('0.5')
   end 
 end 
