@@ -61,5 +61,26 @@ describe 'As a merchant user' do
 
       expect(page).to have_content('Your coupon has been created!')
     end 
+
+    it 'cannot create a new coupon if it does not fill in a field or uses non-unique details' do 
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_admin)
+
+      visit '/merchant/coupons/new'
+      
+      fill_in :name, with: 'New Year Sale'
+      fill_in :code, with: 'NEWYEARNEWME'
+
+      click_button 'Create Coupon'
+
+      expect(page).to have_content("Value off can't be blank")
+
+      fill_in :name, with: 'Half off summer sale!'
+      fill_in :code, with: 'xyz'
+      fill_in :value_off, with: 0.50
+
+      click_button 'Create Coupon'
+
+      expect(page).to have_content('Name has already been taken')
+    end 
   end 
 end 
