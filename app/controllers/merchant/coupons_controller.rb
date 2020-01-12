@@ -18,6 +18,10 @@ class Merchant::CouponsController < ApplicationController
     end
   end 
 
+  def show
+    @coupon = Coupon.find(params[:id])
+  end 
+
   def edit
     @coupon = Coupon.find(params[:id])
   end 
