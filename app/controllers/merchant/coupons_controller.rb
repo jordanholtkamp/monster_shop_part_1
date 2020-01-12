@@ -41,7 +41,7 @@ class Merchant::CouponsController < ApplicationController
   def destroy
     coupon = Coupon.find(params[:id])
     coupon.destroy
-    flash[:notice] = "You have deleted #{coupon.name}"
+    flash[:error] = "You have deleted #{coupon.name}"
     redirect_to "/merchant/coupons"
   end 
 
