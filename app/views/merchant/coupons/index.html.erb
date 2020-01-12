@@ -7,7 +7,8 @@
       <%= link_to "#{coupon.name}", "/merchant/coupons/#{coupon.id}" %>
       <p>Code: <%= coupon.code %></p>
       <p>Percentage off: <%= (coupon.value_off) %>%</p>
-      <%= link_to 'Edit Coupon', "/merchant/coupons/#{coupon.id}/edit" %>
+      <%= link_to 'Edit Coupon', "/merchant/coupons/#{coupon.id}/edit" %><br>
+      <%= link_to 'Delete Coupon', "/merchant/coupons/#{coupon.id}", method: :delete if coupon.no_orders? %>
     </section>
   <% end %>
 </section>
