@@ -7,6 +7,7 @@
       <%= coupon.name %>
       <p>Code: <%= coupon.code %></p>
       <p>Percentage off: <%= (coupon.value_off * 100) %>%</p>
+      <%= link_to 'Edit Coupon', "/merchant/coupons/#{coupon.id}/edit" %>
     </section>
   <% end %>
 </section>

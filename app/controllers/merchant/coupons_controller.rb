@@ -18,6 +18,22 @@ class Merchant::CouponsController < ApplicationController
     end
   end 
 
+  def edit
+    @coupon = Coupon.find(params[:id])
+  end 
+
+  def update 
+    coupon = Coupon.find(params[:id])
+    coupon.update(coupon_params)
+    if coupon.save
+      flash[:success] = "#{coupon.name} has been updated."
+      redirect_to '/merchant/coupons'
+    else 
+      redirect_back(fallback_location: '/merchant/coupons')
+      flash[:error] = coupon.errors.full_messages.to_sentence
+    end 
+  end 
+
   private
   
   def coupon_params
