@@ -48,5 +48,16 @@ describe 'As a merchant', type: :feature do
       expect(page).to_not have_css("coupon-#{id}")
       expect(page).to have_content('You have deleted Half off summer sale')
     end 
+
+    it 'does not show a delete button if that coupon has been used in an order' do 
+      user = create(:random_user)
+      order = create(:random_order, user_id: user.id, coupon_id: @coupon_1.id)
+
+      visit '/merchant/coupons'
+
+      within "#coupon-#{@coupon_1.id}" do 
+        expect(page).to_not have_link('Delete Coupon')
+      end 
+    end 
   end 
 end 
