@@ -1,0 +1,16 @@
+<h1>Add New Coupon to Your Shop </h1>
+
+<center>
+  <%= form_tag "/merchant/coupons", method: :post do %>
+    <%= label_tag :name %>
+    <%= text_field_tag :name %>
+
+    <%= label_tag :code %>
+    <%= text_field_tag :code %>
+
+    <%= label_tag :value_off %>
+    <%= text_field_tag :value_off %>
+
+    <%= submit_tag 'Create Coupon' %>
+  <% end %>
+</center>
