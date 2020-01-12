@@ -25,6 +25,7 @@ describe 'As a merchant user' do
     @merchant_company.users << @merchant_admin
     @merchant_company.coupons << [@coupon_1, @coupon_2]
   end 
+  
   describe 'on the coupon index page' do 
     it 'has a link for a new coupon' do 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant_admin)
