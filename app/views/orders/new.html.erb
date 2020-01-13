@@ -20,6 +20,13 @@
   <% end %>
 </table>
 <h3 align = "right">Total: <%= number_to_currency(cart.total)%></h3>
+<right>
+<%= form_tag '/coupon' do %>
+  <%= label_tag :promo_code %>
+  <%= text_field_tag :promo_code %>
+  <%= submit_tag 'Apply Promo Code' %>
+<% end %>
+</right>
 <center>
   <h2>Shipping Info:</h2>
   <%= form_tag "/profile/orders", method: :create do %>

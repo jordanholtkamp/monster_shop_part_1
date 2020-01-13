@@ -51,6 +51,19 @@ RSpec.describe 'Cart show' do
         end
         expect(current_path).to eq('/login')
       end
+
+      it 'shows a form for me to add a coupon promo code' do 
+        @coupon_1 = @mike.coupons.create(name: 'Half off summer sale!',
+                                         code: 'summersale',
+                                         value_off: 50)
+        user = create(:random_user)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+        visit '/orders/new'
+
+        fill_in :promo_code, with: 'summersale'
+        click_button 'Apply Promo Code'
+      end 
     end
   end
 
