@@ -7,5 +7,6 @@ class CouponSessionsController < ApplicationController
     else 
       flash[:error] = 'The coupon promo code you entered does not exist.'
     end 
+    redirect_to '/orders/new'
   end 
 end 

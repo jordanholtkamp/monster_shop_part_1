@@ -61,8 +61,15 @@ RSpec.describe 'Cart show' do
 
         visit '/orders/new'
 
-        fill_in :promo_code, with: 'summersale'
+        fill_in :promo_code, with: 'not a code'
         click_button 'Apply Promo Code'
+
+        expect(page).to have_content('The coupon promo code you entered does not exist.')
+
+        fill_in :promo_code, with: @coupon_1.code
+        click_button 'Apply Promo Code'
+
+        expect(page).to have_content("#{@coupon_1.name} has been applied.")
       end 
     end
   end
