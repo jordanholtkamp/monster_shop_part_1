@@ -43,10 +43,18 @@
   <% end %>
 </table>
   <p>Total: <%= number_to_currency(cart.total) %></p>
+  
+  <% binding.pry %>
+  <%# <% if cart.coupon.nil? %> %>
+    <%# <p>Savings: 0</p>
+  <% else %>
+    <p>Savings: <%=  %></p>
+  <%# <% end %> %>
+
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
   <section id="checkout">
     <% if current_user %>
-      <%= form_tag '/coupon', method: :patch do %>
+      <%= form_tag "/coupon", method: :patch do %>
         <%= label_tag :promo_code %>
         <%= text_field_tag :promo_code %>
         <%= submit_tag 'Apply Promo Code' %>

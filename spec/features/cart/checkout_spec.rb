@@ -51,42 +51,6 @@ RSpec.describe 'Cart show' do
         end
         expect(current_path).to eq('/login')
       end
-
-      it 'shows a form for me to add a coupon promo code' do 
-        @coupon_1 = @mike.coupons.create(name: 'Half off summer sale!',
-                                         code: 'summersale',
-                                         value_off: 50)
-
-        user = create(:random_user)
-        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-
-        visit '/cart'
-
-        fill_in :promo_code, with: 'not a code'
-        click_button 'Apply Promo Code'
-
-        expect(page).to have_content('The coupon promo code you entered does not exist.')
-
-        fill_in :promo_code, with: @coupon_1.code
-        click_button 'Apply Promo Code'
-
-        expect(page).to have_content("#{@coupon_1.name} has been applied.")
-      end 
-
-      it 'only applies the last coupon that was entered' do 
-        @coupon_1 = @mike.coupons.create(name: 'Half off summer sale!',
-                                         code: 'summersale',
-                                         value_off: 50)
-
-        @coupon_2 = @mike.coupons.create(name: 'Labor Day Sale',
-                                         code: 'LABORDAY25',
-                                         value_off: 25)
-
-        user = create(:random_user)
-        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-        
-        #TODO: make test to see which coupon is stored in the session when putting in two coupon codes. It will always apply the last one and can only use one per order even if they have items from different stores
-      end 
     end
   end
 
