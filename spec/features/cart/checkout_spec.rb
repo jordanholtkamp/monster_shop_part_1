@@ -60,7 +60,7 @@ RSpec.describe 'Cart show' do
         user = create(:random_user)
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
-        visit '/orders/new'
+        visit '/cart'
 
         fill_in :promo_code, with: 'not a code'
         click_button 'Apply Promo Code'

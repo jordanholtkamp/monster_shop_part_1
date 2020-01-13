@@ -59,7 +59,7 @@ Rails.application.routes.draw do
     delete '/coupons/:id', to: 'coupons#destroy'
   end
 
-  post '/coupon', to: 'coupon_sessions#create'
+  patch '/coupon', to: 'coupon_sessions#update'
 
   namespace :admin do
     get '/users', to: 'users#index'

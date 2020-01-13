@@ -1,5 +1,5 @@
 class CouponSessionsController < ApplicationController
-  def create
+  def update
     coupon = Coupon.find_by(code: params[:promo_code])
     if coupon
       session[:coupon] = coupon.id
@@ -7,6 +7,6 @@ class CouponSessionsController < ApplicationController
     else 
       flash[:error] = 'The coupon promo code you entered does not exist.'
     end 
-    redirect_to '/orders/new'
+    redirect_to '/cart'
   end 
 end 
