@@ -4,8 +4,8 @@ class SessionsController < ApplicationController
     if current_user
       login(current_user)
       flash[:success] = "#{current_user.name}, you are already logged in!"
-    # else
-    #   render :new
+    else
+      render :new
     end
   end
 

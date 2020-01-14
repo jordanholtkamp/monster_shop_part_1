@@ -10,6 +10,7 @@
     <th>Quantity</th>
     <th>Subtotal</th>
   </tr>
+      <% tote = 0 %>
   <% @items.each do |item,quantity| %>
     <tr id= "cart-item-<%=item.id%>">
       <td>
@@ -26,7 +27,12 @@
         </p>
       </td>
       <td>
-        <p><%=number_to_currency(item.price)%></p>
+        <% if coupon_session.nil? || !item.discountable?(coupon_session) %>
+          <p><%=number_to_currency(item.price)%></p><br>
+        <% elsif !coupon_session.nil? && item.discountable?(coupon_session) %>
+          <strike><p>Original Price: <%=number_to_currency(item.price)%></p><br></strike>
+          <p>Discounted Price: <%= number_to_currency(item.discounted_price(coupon_session)) %></p>
+        <% end %>
       </td>
       <td>
         <center>
@@ -37,15 +43,31 @@
         </center>
         </td>
       <td>
-        <p><%=number_to_currency(cart.subtotal(item))%></p>
+        <% if coupon_session.nil? || !item.discountable?(coupon_session) %>
+          <p><%=number_to_currency(cart.subtotal(item))%></p>
+          <% tote += cart.subtotal(item) %>
+        <% elsif !coupon_session.nil? && item.discountable?(coupon_session) %>
+          <strike><p>Original Subtotal: <%=number_to_currency(cart.subtotal(item))%></p></strike>
+          <p>Discounted Subtotal: <%= number_to_currency(item.discounted_price(coupon_session)*quantity) %></p>
+          <% tote += item.discounted_price(coupon_session)*quantity %>
+        <% end %>
     </td>
     </tr>
+    <% tote %>
   <% end %>
 </table>
   <p>Total: <%= number_to_currency(cart.total) %></p>
+  <p>Discounted Total: <%= number_to_currency(tote) %></p>
+
+
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
   <section id="checkout">
     <% if current_user %>
+      <%= form_tag "/coupon", method: :patch do %>
+        <%= label_tag :promo_code %>
+        <%= text_field_tag :promo_code %>
+        <%= submit_tag 'Apply Promo Code' %>
+      <% end %>
       <p><%= link_to "Checkout", "/orders/new", method: :get %></p>
     <% else %>
       <p>You must <%= link_to 'register', '/register', method: :get %> or <%= link_to 'login', '/login', method: :get %> to finish the checkout process.</p>

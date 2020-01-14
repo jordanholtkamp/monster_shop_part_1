@@ -10,6 +10,7 @@ Merchant.destroy_all
 Item.destroy_all
 Order.destroy_all
 User.destroy_all
+Coupon.destroy_all
 
 #merchants
 bike_shop = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
@@ -40,15 +41,15 @@ yamazaki = liquor_store.items.create(name: "The Yamazaki", description: "Importe
 nikka = liquor_store.items.create(name: "Nikka", description: "Straight from the barrel!", price: 180, image: "https://cdn11.bigcommerce.com/s-zhp7f0lunw/images/stencil/1024x1024/products/17352/4757/Nikka_From_the_Barrel__52967.1577829892.jpg?c=2", inventory: 10)
 
 #phone_shop coupons
-coupon_1 = Coupon.new(name: 'Half off summer sale!',
-  code: 'summersale',
-  value_off: 0.50)
+coupon_1 = phone_shop.coupons.create(name: 'Half off summer sale!',
+                                     code: 'summersale',
+                                     value_off: 50)
 
-coupon_2 = Coupon.new(name: 'Labor Day Sale',
-  code: 'LaborDay2020',
-  value_off: 0.30)
+coupon_2 = phone_shop.coupons.create(name: 'Labor Day Sale',
+                                     code: 'LaborDay2020',
+                                     value_off: 30)
 
-phone_shop.coupons << [coupon_1, coupon_2]
+# phone_shop.coupons << [coupon_1, coupon_2]
   
 user = User.create(name: "Jordan",
                     address: "394 High St",
