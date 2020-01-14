@@ -6,6 +6,6 @@ class CouponSession
   end 
 
   def add_coupon(coupon)
-    @coupon_contents[coupon.id.to_s] = coupon
+    @coupon_contents[:info] = coupon
   end
 end 

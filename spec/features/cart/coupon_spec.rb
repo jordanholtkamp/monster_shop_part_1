@@ -47,7 +47,7 @@ describe 'As a user', type: :feature do
     it 'discounts the item prices for the merchant items when the code is applied' do
       visit '/cart'
 
-      # expect(page).to have_content("Discounted total: 180")
+      expect(page).to_not have_content("Discounted total")
       # expect(page).to have_content("Savings: 0")
 
       fill_in :promo_code, with: @coupon_1.code
@@ -55,7 +55,7 @@ describe 'As a user', type: :feature do
 
       visit '/cart'
 
-      # expect(page).to have_content("Discounted total: 140")
+      expect(page).to have_content("Discounted total: 140")
       expect(page).to have_content("Savings: 40")
 
     end

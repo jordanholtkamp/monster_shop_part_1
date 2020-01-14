@@ -43,13 +43,16 @@
   <% end %>
 </table>
   <p>Total: <%= number_to_currency(cart.total) %></p>
+
+  <% if !coupon_session.coupon_contents.empty? %>
+    <p>Discounted Total: <%= number_to_currency(cart.total) %></p>
+  <% end %>
   
-  <% binding.pry %>
-  <%# <% if cart.coupon.nil? %> %>
-    <%# <p>Savings: 0</p>
-  <% else %>
-    <p>Savings: <%=  %></p>
-  <%# <% end %> %>
+  <%# <% if coupon_session.coupon_contents.empty? %>
+    <%# <p>Savings: 0</p> %>
+  <%# <% else %> %>
+    <%# <p>Savings: <%= binding.pry %></p> %>
+  <%# <% end %> %> %>
 
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
   <section id="checkout">
