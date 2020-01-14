@@ -46,7 +46,11 @@
     </tr>
   <% end %>
 </table>
-
+<section id="coupon">
+  <% if !@order.coupon.nil? %>
+    <p>Coupon used for this order: <%= @order.coupon.name %></p>
+  <% end %>
+</section>
 <section id="grandtotal">
   <p> Total Quantity of Items: <%=@order.items.count%></p>
   <p>Total: <%=number_to_currency(@order.grandtotal)%></p>
