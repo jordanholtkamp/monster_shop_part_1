@@ -35,4 +35,8 @@ class Item <ApplicationRecord
   def toggle_active_status
     toggle!(:active?)
   end
+
+  def discountable?(coupon)
+    merchant_id == coupon.merchant_id
+  end 
 end

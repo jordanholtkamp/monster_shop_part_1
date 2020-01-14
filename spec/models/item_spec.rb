@@ -51,6 +51,27 @@ describe Item, type: :model do
       expect(@chain.no_orders?).to eq(false)
     end
 
+    it "discountable?" do
+      other_merchant = create(:random_merchant)
+      item = create(:random_item, price: 10, merchant_id: other_merchant.id)
+
+      # item_hash = {item => 1, @chain => 1}
+
+      coupon_1 = @bike_shop.coupons.create(name: 'Half off summer sale!',
+                                           code: 'summersale',
+                                           value_off: 50)
+
+      coupon_2 = other_merchant.coupons.create(name: 'New member sale',
+                                               code: 'welcome10',
+                                               value_off: 10)
+
+      expect(item.discountable?(coupon_2)).to be_truthy
+      expect(item.discountable?(coupon_1)).to_not be_truthy
+      
+      expect(@chain.discountable?(coupon_1)).to be_truthy
+      expect(@chain.discountable?(coupon_2)).to_not be_truthy
+    end
+
     describe "most_popular" do
       it "can find five most popular items" do
         item_1 = create(:random_item, merchant_id: @bike_shop.id)
