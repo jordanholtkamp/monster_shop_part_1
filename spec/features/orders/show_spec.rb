@@ -1,12 +1,55 @@
 require 'rails_helper'
 
 RSpec.describe "as a registered user" do
+  it 'shows the coupon used on the order show page' do
+    mike = create(:random_merchant)
+    user = create(:random_user)
+    item_1 = create(:random_item, merchant_id: mike.id)
+    coupon = mike.coupons.create(name: 'Summer Sale',
+                                  code: 'summer20',
+                                  value_off: 20)
+  
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+    
+    visit "/items/#{item_1.id}"
+    click_on "Add To Cart"
+    
+    visit '/cart'
+
+    fill_in :promo_code, with: coupon.code
+    click_button 'Apply Promo Code'
+
+    click_link 'Checkout'
+
+    name = "Bert"
+    address = "123 Sesame St."
+    city = "NYC"
+    state = "New York"
+    zip = 10001
+
+    fill_in :name, with: name
+    fill_in :address, with: address
+    fill_in :city, with: city
+    fill_in :state, with: state
+    fill_in :zip, with: zip
+
+    click_button 'Create Order'
+
+    new_order = Order.last
+      
+    visit "/profile/orders/#{new_order.id}"
+    
+    within "#coupon" do
+      expect(page).to have_content("Coupon used for this order: #{coupon.name}")
+    end
+  end
+
   before :each do
-    mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
+    @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
     meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
     @tire = meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
-    @paper = mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 3)
-    @pencil = mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+    @paper = @mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 3)
+    @pencil = @mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
     @user = create(:random_user)
 
     @order = @user.orders.create(name: "Jordan", address: "123 Hi Road", city: "Cleveland", state: "OH", zip: "44333")
@@ -22,8 +65,8 @@ RSpec.describe "as a registered user" do
     fill_in :email, with: @user.email
     fill_in :password, with: @user.password
     click_button "Login"
-
   end
+  
   describe "when I visit my order index page" do
     it "the order ID links to the order show page" do
       visit "/profile/orders"

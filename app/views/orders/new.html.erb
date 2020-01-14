@@ -8,18 +8,40 @@
     <th>Sold By</th>
     <th>Inventory</th>
   </tr>
+
+<% tote = 0 %>
   <% cart.items.each do |item, quantity| %>
     <tr id='order-item-<%= item.id%>'>
       <td><h2><%= link_to item.name, "/items/#{item.id}" %></h2></td>
-      <td><p><%= number_to_currency(item.price) %></p></td>
+      <td>
+        <% if coupon_session.nil? || !item.discountable?(coupon_session) %>
+          <p><%= number_to_currency(item.price) %></p>
+        <% elsif !coupon_session.nil? && item.discountable?(coupon_session) %>
+          <strike><p>Original Price: <%=number_to_currency(item.price)%></p><br></strike>
+          <p>Discounted Price: <%= number_to_currency(item.discounted_price(coupon_session)) %></p>
+        <% end %>
+      </td>
       <td><p><%= quantity %></p></td>
-      <td><p><%= number_to_currency(cart.subtotal(item)) %></p><td>
+      <td>
+      <% if coupon_session.nil? || !item.discountable?(coupon_session) %>
+        <p><%= number_to_currency(cart.subtotal(item)) %></p>
+        <% tote += cart.subtotal(item) %>
+      <% elsif !coupon_session.nil? && item.discountable?(coupon_session) %>
+        <strike><p>Original Subtotal: <%=number_to_currency(cart.subtotal(item))%></p></strike>
+        <p>Discounted Subtotal: <%= number_to_currency(item.discounted_price(coupon_session)*quantity) %></p>
+        <% tote += item.discounted_price(coupon_session)*quantity %>
+      <% end %>
+      <td>
       <td><p><%= link_to item.merchant.name, "/merchants/#{item.merchant_id}" %></p></td>
       <td><p><%= item.inventory %> in stock</p></td>
     </tr>
+    <% tote %>
   <% end %>
 </table>
 <h3 align = "right">Total: <%= number_to_currency(cart.total)%></h3>
+<% if !coupon_session.nil? %>
+  <h3 align = "right">Discounted Total: <%= number_to_currency(tote)%></h3>
+<% end %>
 <center>
   <h2>Shipping Info:</h2>
   <%= form_tag "/profile/orders", method: :create do %>

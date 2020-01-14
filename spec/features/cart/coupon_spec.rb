@@ -125,5 +125,36 @@ describe 'As a user', type: :feature do
         expect(page).to have_content("Discounted Subtotal")
       end
     end 
+
+    it 'saves the coupon once the user places order' do
+      visit '/cart'
+
+      fill_in :promo_code, with: @coupon_1.code
+      click_button 'Apply Promo Code'
+
+      click_link 'Checkout'
+
+      name = "Bert"
+      address = "123 Sesame St."
+      city = "NYC"
+      state = "New York"
+      zip = 10001
+
+      fill_in :name, with: name
+      fill_in :address, with: address
+      fill_in :city, with: city
+      fill_in :state, with: state
+      fill_in :zip, with: zip
+
+      click_button "Create Order"
+
+      item_order_1 = ItemOrder.find_by(item_id: @item_1.id)
+      item_order_2 = ItemOrder.find_by(item_id: @item_2.id)
+      item_order_3 = ItemOrder.find_by(item_id: @item_3.id)
+
+      expect(item_order_1.price).to eq(30)
+      expect(item_order_2.price).to eq(10)
+      expect(item_order_3.price).to eq(100)
+    end
   end
 end
