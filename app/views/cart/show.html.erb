@@ -10,6 +10,7 @@
     <th>Quantity</th>
     <th>Subtotal</th>
   </tr>
+      <% tote = 0 %>
   <% @items.each do |item,quantity| %>
     <tr id= "cart-item-<%=item.id%>">
       <td>
@@ -44,15 +45,19 @@
       <td>
         <% if coupon_session.nil? || !item.discountable?(coupon_session) %>
           <p><%=number_to_currency(cart.subtotal(item))%></p>
+          <% tote += cart.subtotal(item) %>
         <% elsif !coupon_session.nil? && item.discountable?(coupon_session) %>
           <strike><p>Original Subtotal: <%=number_to_currency(cart.subtotal(item))%></p></strike>
           <p>Discounted Subtotal: <%= number_to_currency(item.discounted_price(coupon_session)*quantity) %></p>
+          <% tote += item.discounted_price(coupon_session)*quantity %>
         <% end %>
     </td>
     </tr>
+    <% tote %>
   <% end %>
 </table>
   <p>Total: <%= number_to_currency(cart.total) %></p>
+  <p>Discounted Total: <%= number_to_currency(tote) %></p>
 
 
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>

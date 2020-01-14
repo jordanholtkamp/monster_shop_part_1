@@ -84,6 +84,8 @@ describe 'As a user', type: :feature do
         expect(page).to_not have_content("Discounted Price")
         expect(page).to_not have_content("Discounted Subtotal")
       end
+
+      expect(page).to have_content("Discounted Total: $164")
     end
 
     it 'does not accept an invalid code' do
