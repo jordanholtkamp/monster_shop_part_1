@@ -89,7 +89,41 @@ describe 'As a user', type: :feature do
     end
 
     it 'does not accept an invalid code' do
-      
+      visit '/cart'
+
+      fill_in :promo_code, with: 'clambakesale'
+      click_button 'Apply Promo Code'
+
+      expect(page).to have_content('The coupon promo code you entered does not exist.')
     end
+
+    it 'still only applies the last one even if they are from different stores' do 
+      new_coupon = @meg.coupons.create(name: 'coup',
+                                       code: 'new_coup',
+                                       value_off: 20)
+
+      visit '/cart'
+
+      fill_in :promo_code, with: @coupon_1.code
+      click_button 'Apply Promo Code'
+
+      fill_in :promo_code, with: new_coupon.code
+      click_button 'Apply Promo Code'
+
+      within "#cart-item-#{@item_1.id}" do
+        expect(page).to_not have_content("Discounted Price")
+        expect(page).to_not have_content("Discounted Subtotal")
+      end
+
+      within "#cart-item-#{@item_2.id}" do
+        expect(page).to_not have_content("Discounted Price")
+        expect(page).to_not have_content("Discounted Subtotal")
+      end
+
+      within "#cart-item-#{@item_3.id}" do
+        expect(page).to have_content("Discounted Price")
+        expect(page).to have_content("Discounted Subtotal")
+      end
+    end 
   end
 end
