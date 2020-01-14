@@ -26,7 +26,12 @@
         </p>
       </td>
       <td>
-        <p><%=number_to_currency(item.price)%></p>
+        <% if coupon_session.nil? || !item.discountable?(coupon_session) %>
+          <p><%=number_to_currency(item.price)%></p><br>
+        <% elsif !coupon_session.nil? && item.discountable?(coupon_session) %>
+          <strike><p>Original Price: <%=number_to_currency(item.price)%></p><br></strike>
+          <p>Discounted Price: <%= number_to_currency(item.discounted_price(coupon_session)) %></p>
+        <% end %>
       </td>
       <td>
         <center>
@@ -37,22 +42,18 @@
         </center>
         </td>
       <td>
-        <p><%=number_to_currency(cart.subtotal(item))%></p>
+        <% if coupon_session.nil? || !item.discountable?(coupon_session) %>
+          <p><%=number_to_currency(cart.subtotal(item))%></p>
+        <% elsif !coupon_session.nil? && item.discountable?(coupon_session) %>
+          <strike><p>Original Subtotal: <%=number_to_currency(cart.subtotal(item))%></p></strike>
+          <p>Discounted Subtotal: <%= number_to_currency(item.discounted_price(coupon_session)*quantity) %></p>
+        <% end %>
     </td>
     </tr>
   <% end %>
 </table>
   <p>Total: <%= number_to_currency(cart.total) %></p>
 
-  <% if !coupon_session.coupon_contents.empty? %>
-    <p>Discounted Total: <%= number_to_currency(cart.total) %></p>
-  <% end %>
-  
-  <%# <% if coupon_session.coupon_contents.empty? %>
-    <%# <p>Savings: 0</p> %>
-  <%# <% else %> %>
-    <%# <p>Savings: <%= binding.pry %></p> %>
-  <%# <% end %> %> %>
 
   <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
   <section id="checkout">

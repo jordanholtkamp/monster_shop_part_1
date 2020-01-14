@@ -1,7 +1,7 @@
 class Item <ApplicationRecord
   belongs_to :merchant
   has_many :reviews, dependent: :destroy
-  has_many :item_orders
+  has_many :item_orders, dependent: :destroy
   has_many :orders, through: :item_orders
 
   validates_presence_of :name,
@@ -39,4 +39,8 @@ class Item <ApplicationRecord
   def discountable?(coupon)
     merchant_id == coupon.merchant_id
   end 
+
+  def discounted_price(coupon)
+    price - ((coupon.value_off) / 100)*price
+  end
 end

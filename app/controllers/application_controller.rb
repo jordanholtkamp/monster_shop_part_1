@@ -20,6 +20,6 @@ class ApplicationController < ActionController::Base
   end
 
   def coupon_session
-    @coupon_session ||= CouponSession.new(session[:coupon] ||= Hash.new(0))
+    @coupon_session = Coupon.find(session[:coupon]) if session[:coupon]
   end 
 end
