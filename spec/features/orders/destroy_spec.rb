@@ -110,7 +110,6 @@ RSpec.describe "As a default user" do
 
         expect(page).to have_content("Your order has been cancelled.")
       end
-
     end
   end
 end

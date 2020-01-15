@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'As an Admin' do
   it 'can not allow me to go to merchant page or cart' do
-
     admin = create(:random_user, role:1)
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
@@ -14,7 +13,6 @@ RSpec.describe 'As an Admin' do
 
     visit '/cart'
     expect(page).to have_content("The page you were looking for doesn't exist (404)")
-
   end
 
   it "can see a merchant's dashboard" do
@@ -51,10 +49,10 @@ RSpec.describe 'As an Admin' do
     expect(page).to have_content("#{merchant.zip}")
 
     within "#order-pending-#{order.id}" do
-    expect(page).to have_content("#{order.id}")
-    expect(page).to have_content("Date Created: #{order.created_at}")
-    expect(page).to have_content("Total Quantity: #{order.items.count}")
-    expect(page).to have_content("Total: #{order.grandtotal}")
+      expect(page).to have_content("#{order.id}")
+      expect(page).to have_content("Date Created: #{order.created_at}")
+      expect(page).to have_content("Total Quantity: #{order.items.count}")
+      expect(page).to have_content("Total: #{order.grandtotal}")
     end
 
     expect(page).to_not have_content("ID: #{order_2.id}")

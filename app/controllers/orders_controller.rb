@@ -13,9 +13,7 @@ class OrdersController <ApplicationController
 
   def create
     order = current_user.orders.create(order_params)
-    if !coupon_session.nil?
-      order.coupon_id = coupon_session.id
-    end
+    give_optional_coupon(order)
     if order.save && order.coupon_id.nil?
       create_item_orders_with_no_coupon(cart, order)
     elsif order.save
@@ -73,5 +71,11 @@ class OrdersController <ApplicationController
     session.delete(:coupon)
     flash[:success] = 'You have placed your order!'
     redirect_to '/profile/orders'
+  end
+
+  def give_optional_coupon(order)
+    if !coupon_session.nil?
+      order.coupon_id = coupon_session.id
+    end
   end
 end
