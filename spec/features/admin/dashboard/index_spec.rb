@@ -45,24 +45,27 @@ RSpec.describe "As an admin" do
     click_button "Login"
 
     within "#order-#{order_2.id}" do
-    expect(page).to have_link(order_2.name)
-    expect(page).to have_content(order_2.id)
-    expect(page).to have_content(order_2.created_at)
+      expect(page).to have_link(order_2.name)
+      expect(page).to have_content(order_2.id)
+      expect(page).to have_content(order_2.created_at)
     end
+
     within "#order-pending" do
-    expect(page).to have_link(order.name)
-    expect(page).to have_content(order.id)
-    expect(page).to have_content(order.created_at)
+      expect(page).to have_link(order.name)
+      expect(page).to have_content(order.id)
+      expect(page).to have_content(order.created_at)
     end
+
     within "#order-shipped" do
-    expect(page).to have_link(order_3.name)
-    expect(page).to have_content(order_3.id)
-    expect(page).to have_content(order_3.created_at)
+      expect(page).to have_link(order_3.name)
+      expect(page).to have_content(order_3.id)
+      expect(page).to have_content(order_3.created_at)
     end
+
     within "#order-cancelled" do
-    expect(page).to have_link(order_4.name)
-    expect(page).to have_content(order_4.id)
-    expect(page).to have_content(order_4.created_at)
+      expect(page).to have_link(order_4.name)
+      expect(page).to have_content(order_4.id)
+      expect(page).to have_content(order_4.created_at)
     end
 
     click_on("#{order_4.name}")
@@ -108,6 +111,7 @@ RSpec.describe "As an admin" do
       expect(page).to have_content(order_1.created_at)
     end
   end
+
   it 'has all user info and name is link to user show page' do
     admin = create(:random_user, role: 1)
     user = create(:random_user, role: 0)
@@ -142,7 +146,5 @@ RSpec.describe "As an admin" do
       expect(page).to have_content("User created at #{user.created_at}")
       expect(page).to have_content("default")
     end
-
   end
-
 end
