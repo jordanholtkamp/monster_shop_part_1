@@ -13,12 +13,7 @@ class MerchantsController < ApplicationController
 
   def create
     merchant = Merchant.create(merchant_params)
-    if merchant.save
-      redirect_to merchants_path
-    else
-      flash[:error] = merchant.errors.full_messages.to_sentence
-      render :new
-    end
+    merchant_create_conditional(merchant)
   end
 
   def edit
@@ -27,13 +22,7 @@ class MerchantsController < ApplicationController
 
   def update
     @merchant = Merchant.find(params[:id])
-    @merchant.update(merchant_params)
-    if @merchant.save
-      redirect_to "/merchants/#{@merchant.id}"
-    else
-      flash[:error] = @merchant.errors.full_messages.to_sentence
-      render :edit
-    end
+    merchant_update_conditional(@merchant)
   end
 
   def destroy
@@ -47,4 +36,22 @@ class MerchantsController < ApplicationController
     params.permit(:name,:address,:city,:state,:zip)
   end
 
+  def merchant_create_conditional(merchant)
+    if merchant.save
+      redirect_to merchants_path
+    else
+      flash[:error] = merchant.errors.full_messages.to_sentence
+      render :new
+    end
+  end
+
+  def merchant_update_conditional(merchant)
+    merchant.update(merchant_params)
+    if merchant.save
+      redirect_to "/merchants/#{merchant.id}"
+    else
+      flash[:error] = merchant.errors.full_messages.to_sentence
+      render :edit
+    end
+  end
 end

@@ -11,14 +11,7 @@ class ReviewsController<ApplicationController
       redirect_to "/items/#{item.id}/reviews/new"
     else
       @item = Item.find(params[:item_id])
-      review = @item.reviews.create(review_params)
-      if review.save
-        flash[:success] = "Review successfully created"
-        redirect_to "/items/#{@item.id}"
-      else
-        flash[:error] = "Rating must be between 1 and 5"
-        render :new
-      end
+      review_create_and_redirect(@item)
     end
   end
 
@@ -48,5 +41,16 @@ class ReviewsController<ApplicationController
   def field_empty?
     params = review_params
     params[:title].empty? || params[:content].empty? || params[:rating].empty?
+  end
+
+  def review_create_and_redirect(item)
+    review = item.reviews.create(review_params)
+    if review.save
+      flash[:success] = "Review successfully created"
+      redirect_to "/items/#{item.id}"
+    else
+      flash[:error] = "Rating must be between 1 and 5"
+      render :new
+    end
   end
 end
