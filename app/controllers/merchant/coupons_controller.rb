@@ -24,9 +24,9 @@ class Merchant::CouponsController < ApplicationController
 
   def edit
     @coupon = Coupon.find(params[:id])
-  end 
+  end
 
-  def update 
+  def update
     coupon = Coupon.find(params[:id])
     coupon.update(coupon_params)
     if coupon.save
@@ -35,19 +35,19 @@ class Merchant::CouponsController < ApplicationController
     else 
       redirect_back(fallback_location: '/merchant/coupons')
       flash[:error] = coupon.errors.full_messages.to_sentence
-    end 
-  end 
+    end
+  end
 
   def destroy
     coupon = Coupon.find(params[:id])
     coupon.destroy
     flash[:error] = "You have deleted #{coupon.name}"
     redirect_to "/merchant/coupons"
-  end 
+  end
 
   private
   
   def coupon_params
     params.permit(:name, :code, :value_off)
-  end 
-end 
+  end
+end

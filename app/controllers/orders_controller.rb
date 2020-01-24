@@ -74,7 +74,7 @@ class OrdersController <ApplicationController
   end
 
   def give_optional_coupon(order)
-    if !coupon_session.nil?
+    if coupon_session
       order.coupon_id = coupon_session.id
     end
   end
